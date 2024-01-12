@@ -56,7 +56,7 @@ def func(message):
         game_process(message)
 
     else:
-        bot.send_message(message.chat.id, "Please choose the given option...", reply_markup=btn)
+        bot.send_message(message.chat.id, question.get('oops'), reply_markup=btn)
         btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
         btn1.add(buttons.get('rules'), buttons.get('add'), buttons.get('start_game'))
         bot.send_message(message.chat.id, question.get('start'), reply_markup=btn1)
@@ -73,19 +73,29 @@ def func(message):
 """ начало игры -> """
 
 def game_process(message):
-    if len(Players) < 3:
-        bot.send_message(message.chat.id, "людей недостаточно")
+    btn = ReplyKeyboardMarkup(resize_keyboard=True)
+    btn.add()
+    if len(Players) < 2:
+        bot.send_message(message.chat.id, question.get('not_enough'))
     else:
         pass
 
-
+    for i, element in enumerate(Players, start=1):
+        bot.send_message(message.chat.id, f"{question.get('player')} : {i} - {element}")
+    
+    for y in Players:
+        shoot(message, y)
+    
+        
+def shoot(message, plsyer):
+    pass                                                      # здесь все что делает каждий игрок по очереди
 
 
 def add_user(message):
     if len(Players) == 6:
         btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
         btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
-        bot.send_message(message.chat.id, "людей уже 6", reply_markup=btn1)
+        bot.send_message(message.chat.id, question.get("too_much"), reply_markup=btn1)
     elif len(Players) < 6:
         Players.append(message.text)
 
@@ -93,7 +103,7 @@ def add_user(message):
         btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
         btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
 
-        bot.send_message(message.chat.id, "Поставьте здесь что нибудь Юсуф (132 строка)", reply_markup=btn1)
+        bot.send_message(message.chat.id, "...", reply_markup=btn1)
 
 
 

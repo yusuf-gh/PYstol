@@ -21,6 +21,7 @@ question1: dict = {
     'no_players': "Not enough players to start the game...",
     'added': "Player has been added",
     'not_enough': "Not enough players",
+    "too_much": 'Too much players (max6)',
     '01':"Player",
     '02':"shoot...",
     'blabla':"Let's go...",
