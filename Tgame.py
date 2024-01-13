@@ -48,8 +48,13 @@ def func(message):
         bot.send_message(message.chat.id, question.get('rules2'))
 
     elif message.text == question.get('add'):
-        x = bot.send_message(message.chat.id, question.get('add_player'))
-        bot.register_next_step_handler(x, add_user)
+        if len(Players) == 6:
+            btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
+            btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
+            bot.send_message(message.chat.id, question.get("too_much"), reply_markup=btn1)
+        else:
+            x = bot.send_message(message.chat.id, question.get('add_player'), reply_markup=delete)
+            bot.register_next_step_handler(x, add_user)
 
     elif message.text == question.get('start_game'):
         bot.send_message(message.chat.id, question.get('blabla'), reply_markup=delete)
@@ -92,18 +97,15 @@ def shoot(message, plsyer):
 
 
 def add_user(message):
-    if len(Players) == 6:
-        btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
-        bot.send_message(message.chat.id, question.get("too_much"), reply_markup=btn1)
-    elif len(Players) < 6:
-        Players.append(message.text)
+    Players.append(message.text)
 
-        bot.send_message(message.chat.id, question['added'])
-        btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
-        btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
+    bot.send_message(message.chat.id, question['added'])
+    btn1 = ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1.add(buttons.get('add'), buttons.get('rules'), buttons.get('start_game'))
 
-        bot.send_message(message.chat.id, "...", reply_markup=btn1)
+    bot.send_message(message.chat.id, "...", reply_markup=btn1)
+
+
 
 
 
