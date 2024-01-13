@@ -57,8 +57,11 @@ def func(message):
             bot.register_next_step_handler(x, add_user)
 
     elif message.text == question.get('start_game'):
-        bot.send_message(message.chat.id, question.get('blabla'), reply_markup=delete)
-        game_process(message)
+        if len(Players) < 2:
+            bot.send_message(message.chat.id, question.get('not_enough'))
+        else:
+            bot.send_message(message.chat.id, question.get('blabla'), reply_markup=delete)
+            game_process(message)
 
     else:
         bot.send_message(message.chat.id, question.get('oops'), reply_markup=btn)
@@ -79,21 +82,19 @@ def func(message):
 
 def game_process(message):
     btn = ReplyKeyboardMarkup(resize_keyboard=True)
-    btn.add()
-    if len(Players) < 2:
-        bot.send_message(message.chat.id, question.get('not_enough'))
-    else:
-        pass
-
+    btn.add(buttons.get('add'))
     for i, element in enumerate(Players, start=1):
         bot.send_message(message.chat.id, f"{question.get('player')} : {i} - {element}")
-    
-    for y in Players:
-        shoot(message, y)
-    
-        
-def shoot(message, plsyer):
-    pass                                                      # здесь все что делает каждий игрок по очереди
+    shoot(message)
+
+def shoot(message, Players):
+    btn = ReplyKeyboardMarkup(resize_keyboard=True)
+    btn1 = KeyboardButton(text="Стрельнуть")
+    btn.add(btn1)
+    # for i, element in enumerate(Players, start=1):
+    #     bot.send_message(message.chat.id, f"{i} - {element}", )
+
+
 
 
 def add_user(message):
